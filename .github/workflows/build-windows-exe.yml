@@ -6,35 +6,22 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller openpyxl playwright
-
-      - name: Install bundled Chromium
-        shell: cmd
-        run: |
-          set PLAYWRIGHT_BROWSERS_PATH=0
-          python -m playwright install chromium
-
+          pip install pyinstaller openpyxl requests beautifulsoup4
       - name: Build EXE
-        shell: cmd
         run: |
-          set PLAYWRIGHT_BROWSERS_PATH=0
-          pyinstaller --noconfirm --clean --onefile --windowed --name AsanLibraryFinder --collect-all playwright AsanLibraryFinder.py
-
+          pyinstaller --noconfirm --clean --onefile --windowed --name AsanLibraryFinder AsanLibraryFinder.py
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: AsanLibraryFinder-Windows
+          name: AsanLibraryFinder-Windows-Light
           path: dist/AsanLibraryFinder.exe
